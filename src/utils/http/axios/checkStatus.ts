@@ -28,7 +28,7 @@ export function checkStatus(
     // Jump to the login page if not logged in, and carry the path of the current page
     // Return to the current page after successful login. This step needs to be operated on the login page.
     case 401:
-      userStore.setToken(undefined);
+      userStore.clearToken();
       errMessage = msg || t('sys.api.errMsg401');
       if (stp === SessionTimeoutProcessingEnum.PAGE_COVERAGE) {
         userStore.setSessionTimeout(true);
@@ -67,13 +67,21 @@ export function checkStatus(
     case 505:
       errMessage = t('sys.api.errMsg505');
       break;
+    case 9400:
+      errMessage = msg;
+      break;
+    case 9500:
+      errMessage = msg;
+      break;
     default:
+      errMessage = '操作失败：' + msg;
   }
 
   if (errMessage) {
     if (errorMessageMode === 'modal') {
       createErrorModal({ title: t('sys.api.errorTip'), content: errMessage });
     } else if (errorMessageMode === 'message') {
+      //@ts-ignore
       error({ content: errMessage, key: `global_error_message_status_${status}` });
     }
   }

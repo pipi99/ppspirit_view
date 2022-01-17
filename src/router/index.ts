@@ -15,6 +15,8 @@ getRouteNames(basicRoutes);
 
 // app router
 export const router = createRouter({
+  // @ts-ignore
+  // history: createWebHashHistory(import.meta.env.VITE_PUBLIC_PATH),
   history: createWebHashHistory(import.meta.env.VITE_PUBLIC_PATH),
   routes: basicRoutes as unknown as RouteRecordRaw[],
   strict: true,

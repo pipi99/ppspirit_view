@@ -10,6 +10,7 @@ import { router } from '/@/router';
 import { PermissionModeEnum } from '/@/enums/appEnum';
 import { pathToRegexp } from 'path-to-regexp';
 
+// @ts-ignore
 const modules = import.meta.globEager('./modules/**/*.ts');
 
 const menuModules: MenuModule[] = [];
@@ -59,6 +60,7 @@ async function getAsyncMenus() {
   if (isRouteMappingMode()) {
     return permissionStore.getFrontMenuList.filter((item) => !item.hideMenu);
   }
+
   return staticMenus;
 }
 

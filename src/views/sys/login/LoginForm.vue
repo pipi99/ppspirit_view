@@ -11,6 +11,7 @@
     <FormItem name="account" class="enter-x">
       <Input
         size="large"
+        autocomplete="off"
         v-model:value="formData.account"
         :placeholder="t('sys.login.userName')"
         class="fix-auto-fill"
@@ -19,9 +20,30 @@
     <FormItem name="password" class="enter-x">
       <InputPassword
         size="large"
+        autocomplete="off"
         visibilityToggle
         v-model:value="formData.password"
         :placeholder="t('sys.login.password')"
+      />
+    </FormItem>
+    <FormItem name="verifyCode" class="enter-x">
+      <Input
+        size="large"
+        autocomplete="off"
+        v-model:value="formData.verifyCode"
+        :placeholder="t('sys.login.captcha')"
+        class="fix-auto-fill"
+        style="display: inline; width: 0"
+      />
+      <captcha
+        ref="captchaRef"
+        class="value"
+        v-model="formData.captchaId"
+        @change="
+          () => {
+            formData.verifyCode = '';
+          }
+        "
       />
     </FormItem>
 
@@ -53,7 +75,7 @@
       </Button> -->
     </FormItem>
     <ARow class="enter-x">
-      <ACol :md="8" :xs="24">
+      <!-- <ACol :md="8" :xs="24">
         <Button block @click="setLoginState(LoginStateEnum.MOBILE)">
           {{ t('sys.login.mobileSignInFormTitle') }}
         </Button>
@@ -62,7 +84,7 @@
         <Button block @click="setLoginState(LoginStateEnum.QR_CODE)">
           {{ t('sys.login.qrSignInFormTitle') }}
         </Button>
-      </ACol>
+      </ACol> -->
       <ACol :md="7" :xs="24">
         <Button block @click="setLoginState(LoginStateEnum.REGISTER)">
           {{ t('sys.login.registerButton') }}
@@ -70,7 +92,7 @@
       </ACol>
     </ARow>
 
-    <Divider class="enter-x">{{ t('sys.login.otherSignIn') }}</Divider>
+    <!-- <Divider class="enter-x">{{ t('sys.login.otherSignIn') }}</Divider>
 
     <div class="flex justify-evenly enter-x" :class="`${prefixCls}-sign-in-way`">
       <GithubFilled />
@@ -78,20 +100,20 @@
       <AlipayCircleFilled />
       <GoogleCircleFilled />
       <TwitterCircleFilled />
-    </div>
+    </div> -->
   </Form>
 </template>
 <script lang="ts" setup>
   import { reactive, ref, unref, computed } from 'vue';
 
-  import { Checkbox, Form, Input, Row, Col, Button, Divider } from 'ant-design-vue';
-  import {
-    GithubFilled,
-    WechatFilled,
-    AlipayCircleFilled,
-    GoogleCircleFilled,
-    TwitterCircleFilled,
-  } from '@ant-design/icons-vue';
+  import { Checkbox, Form, Input, Row, Col, Button } from 'ant-design-vue';
+  // import {
+  //   GithubFilled,
+  //   WechatFilled,
+  //   AlipayCircleFilled,
+  //   GoogleCircleFilled,
+  //   TwitterCircleFilled,
+  // } from '@ant-design/icons-vue';
   import LoginFormTitle from './LoginFormTitle.vue';
 
   import { useI18n } from '/@/hooks/web/useI18n';
@@ -101,6 +123,7 @@
   import { LoginStateEnum, useLoginState, useFormRules, useFormValid } from './useLogin';
   import { useDesign } from '/@/hooks/web/useDesign';
   //import { onKeyStroke } from '@vueuse/core';
+  import captcha from './components/captcha.vue';
 
   const ACol = Col;
   const ARow = Row;
@@ -118,9 +141,13 @@
   const loading = ref(false);
   const rememberMe = ref(false);
 
+  const captchaRef = ref();
+
   const formData = reactive({
-    account: 'vben',
-    password: '123456',
+    account: '',
+    password: '',
+    captchaId: '',
+    verifyCode: '',
   });
 
   const { validForm } = useFormValid(formRef);
@@ -131,22 +158,29 @@
 
   async function handleLogin() {
     const data = await validForm();
-    if (!data) return;
+    if (!data || loading.value) return;
     try {
       loading.value = true;
       const userInfo = await userStore.login({
         password: data.password,
         username: data.account,
+        captchaId: formData.captchaId,
+        verifyCode: formData.verifyCode,
+        rememberMe: rememberMe.value,
         mode: 'none', //不要默认的错误提示
       });
       if (userInfo) {
         notification.success({
           message: t('sys.login.loginSuccessTitle'),
-          description: `${t('sys.login.loginSuccessDesc')}: ${userInfo.realName}`,
+          description: `${t('sys.login.loginSuccessDesc')}: ${userInfo.alias}`,
           duration: 3,
         });
       }
     } catch (error) {
+      //清空并刷新验证码
+      formData.captchaId = formData.verifyCode = '';
+      captchaRef.value.refresh();
+
       createErrorModal({
         title: t('sys.api.errorTip'),
         content: (error as unknown as Error).message || t('sys.api.networkExceptionMsg'),

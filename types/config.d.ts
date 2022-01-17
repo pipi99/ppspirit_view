@@ -53,6 +53,8 @@ export interface HeaderSetting {
   useLockPage: boolean;
   // Show document button
   showDoc: boolean;
+  // 是否显示修改密码按钮
+  showModifyPassword: boolean;
   // Show message center button
   showNotice: boolean;
   showSearch: boolean;

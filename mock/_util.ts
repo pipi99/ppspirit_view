@@ -1,5 +1,7 @@
 // Interface data format used to return a unified format
 
+import { HEADER_TOKEN_KEY } from '/@/enums/httpEnum';
+
 export function resultSuccess<T = Recordable>(result: T, { message = 'ok' } = {}) {
   return {
     code: 0,
@@ -47,7 +49,8 @@ export function pagination<T = any>(pageNo: number, pageSize: number, array: T[]
 export interface requestParams {
   method: string;
   body: any;
-  headers?: { authorization?: string };
+  // headers?: { authorization?: string };
+  headers?: { [HEADER_TOKEN_KEY]?: string };
   query: any;
 }
 
@@ -56,5 +59,5 @@ export interface requestParams {
  *
  */
 export function getRequestToken({ headers }: requestParams): string | undefined {
-  return headers?.authorization;
+  return headers?.[HEADER_TOKEN_KEY];
 }

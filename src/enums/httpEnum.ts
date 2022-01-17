@@ -2,9 +2,10 @@
  * @description: Request result set
  */
 export enum ResultEnum {
-  SUCCESS = 0,
+  SUCCESS = 200,
   ERROR = 1,
   TIMEOUT = 401,
+  FORBIDDEN = 403,
   TYPE = 'success',
 }
 
@@ -29,3 +30,6 @@ export enum ContentTypeEnum {
   // form-data  upload
   FORM_DATA = 'multipart/form-data;charset=UTF-8',
 }
+
+//请求头携带的token
+export const HEADER_TOKEN_KEY = 'pp-spirit-token';

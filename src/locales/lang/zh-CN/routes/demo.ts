@@ -165,8 +165,13 @@ export default {
     account_detail: '账号详情',
     password: '修改密码',
     dept: '部门管理',
+    dict: '数据字典',
     menu: '菜单管理',
+    permission: '权限管理',
+    menuall: '菜单库（仅存储）',
     role: '角色管理',
+    group: '用户组管理',
+    user: '用户管理',
   },
   table: {
     table: 'Table',

@@ -4,6 +4,9 @@
 export interface LoginParams {
   username: string;
   password: string;
+  captchaId: string;
+  verifyCode: string;
+  rememberMe?: any;
 }
 
 export interface RoleInfo {
@@ -17,6 +20,9 @@ export interface RoleInfo {
 export interface LoginResultModel {
   userId: string | number;
   token: string;
+  refreshToken: string;
+  expire: number;
+  refreshExpire: number;
   role: RoleInfo;
 }
 
@@ -31,6 +37,8 @@ export interface GetUserInfoModel {
   username: string;
   // 真实名字
   realName: string;
+  // 真实名字
+  alias: string;
   // 头像
   avatar: string;
   // 介绍

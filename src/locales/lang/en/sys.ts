@@ -71,7 +71,7 @@ export default {
     signUpFormTitle: 'Sign up',
     forgetFormTitle: 'Reset password',
 
-    signInTitle: 'Backstage management system',
+    signInTitle: 'General authority management system',
     signInDesc: 'Enter your personal details and get started!',
     policy: 'I agree to the xxx Privacy Policy',
     scanSign: `scanning the code to complete the login`,
@@ -95,6 +95,7 @@ export default {
     diffPwd: 'The two passwords are inconsistent',
 
     userName: 'Username',
+    captcha: 'captcha',
     password: 'Password',
     confirmPassword: 'Confirm Password',
     email: 'Email',

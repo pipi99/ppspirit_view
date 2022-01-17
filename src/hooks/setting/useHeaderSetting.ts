@@ -48,6 +48,8 @@ export function useHeaderSetting() {
 
   const getShowDoc = computed(() => appStore.getHeaderSetting.showDoc);
 
+  const getShowModifyPassword = computed(() => appStore.getHeaderSetting.showModifyPassword);
+
   const getHeaderTheme = computed(() => appStore.getHeaderSetting.theme);
 
   const getShowHeader = computed(() => appStore.getHeaderSetting.show);
@@ -86,6 +88,7 @@ export function useHeaderSetting() {
     setHeaderSetting,
 
     getShowDoc,
+    getShowModifyPassword,
     getShowSearch,
     getHeaderTheme,
     getUseLockPage,

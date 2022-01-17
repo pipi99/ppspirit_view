@@ -17,7 +17,13 @@
           icon="ion:document-text-outline"
           v-if="getShowDoc"
         />
-        <MenuDivider v-if="getShowDoc" />
+        <MenuItem
+          key="modifyPassword"
+          :text="t('layout.header.dropdownModifyPassword')"
+          icon="ion:document-text-outline"
+          v-if="getShowModifyPassword"
+        />
+        <MenuDivider v-if="getShowModifyPassword" />
         <MenuItem
           v-if="getUseLockPage"
           key="lock"
@@ -33,12 +39,22 @@
     </template>
   </Dropdown>
   <LockAction @register="register" />
+
+  <a-modal
+    v-model:visible="modifyPasswordVisible"
+    title="修改密码"
+    @ok="modifyPasswordComponent.handleSubmit()"
+    @cancel="hideModifyPasswordModal"
+  >
+    <modify-password-modal ref="modifyPasswordComponent" />
+  </a-modal>
 </template>
 <script lang="ts">
+  import ModifyPasswordModal from '/@/views/ppspirit/system/password/index.vue';
   // components
   import { Dropdown, Menu } from 'ant-design-vue';
 
-  import { defineComponent, computed } from 'vue';
+  import { defineComponent, computed, ref } from 'vue';
 
   import { DOC_URL } from '/@/settings/siteSetting';
 
@@ -54,11 +70,12 @@
 
   import { createAsyncComponent } from '/@/utils/factory/createAsyncComponent';
 
-  type MenuEvent = 'logout' | 'doc' | 'lock';
+  type MenuEvent = 'logout' | 'doc' | 'lock' | 'modifyPassword';
 
   export default defineComponent({
     name: 'UserDropdown',
     components: {
+      ModifyPasswordModal,
       Dropdown,
       Menu,
       MenuItem: createAsyncComponent(() => import('./DropMenuItem.vue')),
@@ -69,9 +86,21 @@
       theme: propTypes.oneOf(['dark', 'light']),
     },
     setup() {
+      const modifyPasswordVisible = ref<boolean>(false);
+      const modifyPasswordComponent = ref<any>();
+
+      const showModifyPasswordModal = () => {
+        modifyPasswordVisible.value = true;
+      };
+
+      const hideModifyPasswordModal = () => {
+        modifyPasswordVisible.value = false;
+        modifyPasswordComponent.value.resetFields();
+      };
+
       const { prefixCls } = useDesign('header-user-dropdown');
       const { t } = useI18n();
-      const { getShowDoc, getUseLockPage } = useHeaderSetting();
+      const { getShowDoc, getUseLockPage, getShowModifyPassword } = useHeaderSetting();
       const userStore = useUserStore();
 
       const getUserInfo = computed(() => {
@@ -106,15 +135,22 @@
           case 'lock':
             handleLock();
             break;
+          case 'modifyPassword':
+            showModifyPasswordModal();
+            break;
         }
       }
 
       return {
         prefixCls,
         t,
+        hideModifyPasswordModal,
+        modifyPasswordComponent,
+        modifyPasswordVisible,
         getUserInfo,
         handleMenuClick,
         getShowDoc,
+        getShowModifyPassword,
         register,
         getUseLockPage,
       };

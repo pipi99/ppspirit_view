@@ -58,12 +58,17 @@ export class Memory<T = any, V = any> {
       return value;
     }
     const now = new Date().getTime();
-    item.time = now + this.alive;
+
+    //此处是vben的bug ,已提issue   : memory.ts set 方法，对于expires 传入的参数，未用作超时时间 #1530
+    // item.time = now + this.alive;
+    //修正为
+    item.time = now + expires;
     item.timeoutId = setTimeout(
       () => {
         this.remove(key);
       },
-      expires > now ? expires - now : expires,
+      // expires > now ? expires - now : expires,
+      expires,
     );
 
     return value;
@@ -84,8 +89,15 @@ export class Memory<T = any, V = any> {
       const item = cache[k];
       if (item && item.time) {
         const now = new Date().getTime();
-        const expire = item.time;
-        if (expire > now) {
+
+        // 页面多次刷新的时候会导致memeory中存储的，token 失效,已提issure #1533
+        // const expire = item.time;
+        // if (expire > now) {
+        //   this.set(k, item.value, expire);
+        // }
+        const time = item.time;
+        if (time > now) {
+          const expire = time - now;
           this.set(k, item.value, expire);
         }
       }
