@@ -172,6 +172,9 @@ export default function ({}) {
         enabled: {
           title: '是否启用',
           form: {
+            component: {
+              value: 1,
+            },
             rules: [{ required: true, message: '请选择' }],
           },
           type: 'dict-select',

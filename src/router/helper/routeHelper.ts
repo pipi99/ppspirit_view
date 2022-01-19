@@ -18,6 +18,7 @@ let dynamicViewsModules: Record<string, () => Promise<Recordable>>;
 
 // Dynamic introduction
 function asyncImportRoute(routes: AppRouteRecordRaw[] | undefined) {
+  //@ts-ignore
   dynamicViewsModules = dynamicViewsModules || import.meta.glob('../../views/**/*.{vue,tsx}');
   if (!routes) return;
   routes.forEach((item) => {

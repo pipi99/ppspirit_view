@@ -3,13 +3,15 @@ import { dict, compute } from '@fast-crud/fast-crud';
 import { defHttp } from '/@/utils/http/axios';
 import { MenuApi } from './api';
 // 构建crudOptions的方法
-export default function ({}) {
+export default function ({ showMenuAllSelectModal }) {
   const api = new MenuApi();
   const pageRequest = async (query) => {
+    query.orders = [{ column: 'sort', isAsc: true }];
     return await api.pageTreeList(query);
   };
   const editRequest = async ({ form, row }) => {
     form.menuId = row.menuId;
+    reSetValue(form);
     return await api.UpdateObj(form);
   };
   const delRequest = async ({ row }) => {
@@ -20,11 +22,29 @@ export default function ({}) {
   };
 
   const addRequest = async ({ form }) => {
+    reSetValue(form);
     return await api.AddObj(form);
   };
 
   const selectedRowKeys = ref([]);
 
+  const reSetValue = (from) => {
+    // 目录
+    if (from.isMenu == 0) {
+      // 组件
+      from.isComponent = 1;
+      from.path = null;
+      from.inFrame = null;
+      from.target = 'LAYOUT';
+
+      // 菜单
+    } else {
+      // 非组件
+      if (from.isComponent == 0) {
+        from.target = 'IFRAME';
+      }
+    }
+  };
   // const onSelectChange = (changed) => {
   //   console.log('selection', changed);
   //   selectedRowKeys.value = changed;
@@ -73,25 +93,7 @@ export default function ({}) {
         //   form: {
         //     show: false,
         //   },
-        // },
-        isMenu: {
-          title: '菜单类型',
-          type: 'dict-select',
-
-          form: {
-            rules: [{ required: true, message: '请选择' }],
-          },
-          dict: dict({
-            data: [
-              { value: 1, label: '菜单' },
-              { value: 0, label: '目录' },
-            ],
-          }),
-          column: {
-            order: 3,
-            width: 120,
-          },
-        },
+        // }, 02
         menuName: {
           title: '菜单名称',
           search: { show: true },
@@ -106,6 +108,25 @@ export default function ({}) {
             width: 180,
           },
         },
+        isMenu: {
+          title: '菜单类型',
+          search: { show: true },
+          type: 'dict-radio',
+          dict: dict({
+            data: [
+              { value: 1, label: '菜单' },
+              { value: 0, label: '目录' },
+            ],
+          }),
+          form: {
+            value: 1,
+            rules: [{ required: true, message: '请选择' }],
+            component: {
+              optionName: 'a-radio-button',
+            },
+          },
+        },
+
         // icon: {
         //   title: '图标',
         //   type: 'text',
@@ -152,23 +173,85 @@ export default function ({}) {
             show: compute((context) => {
               return context.form.isMenu === 1;
             }),
+            suffixRender() {
+              return (
+                <a-button-group style={'padding-left:5px'}>
+                  <a-button onClick={showMenuAllSelectModal}>选择</a-button>
+                </a-button-group>
+              );
+            },
           },
           column: {
             width: 180,
           },
         },
-        description: {
-          title: '菜单描述',
+        isComponent: {
+          title: '是否路由',
           search: { show: true },
+          type: 'dict-radio',
+          dict: dict({
+            data: [
+              { value: 1, label: '是' },
+              { value: 0, label: '否' },
+            ],
+          }),
+          form: {
+            value: 1,
+            rules: [{ required: true, message: '请选择' }],
+            component: {
+              optionName: 'a-radio-button',
+            },
+            show: compute((context) => {
+              return context.form.isMenu === 1;
+            }),
+          },
+        },
+        target: {
+          title: '路由组件',
           type: 'text',
+          form: {
+            show: compute((context) => {
+              return context.form.isComponent === 1 && context.form.isMenu === 1;
+            }),
+            helper:
+              '相对 view 目录的vue组件的绝对地址（/ppspirit/system/menu/index.vue）写为： /ppspirit/system/menu/index',
+            rules: [{ required: true, message: '请输入菜单名称' }],
+            component: {
+              maxlength: 1000, // 原生属性要写在这里
+              props: {
+                type: 'text',
+                showWordLimit: true,
+              },
+            },
+          },
           column: {
             width: 180,
           },
         },
-        enabled: {
-          title: '是否启用',
+        // isEnabled: {
+        //   title: '是否启用',
+        //   type: 'dict-select',
+        //   form: {
+        //     helper: '菜单可见，禁用或者启用状态',
+        //     value: 1,
+        //     rules: [{ required: true, message: '请选择' }],
+        //   },
+        //   dict: dict({
+        //     data: [
+        //       { value: 1, label: '是' },
+        //       { value: 0, label: '否' },
+        //     ],
+        //   }),
+        //   column: {
+        //     width: 120,
+        //   },
+        // },
+        isHidden: {
+          title: '是否隐藏',
           type: 'dict-select',
           form: {
+            helper: '菜单可见不可见',
+            value: 0,
             rules: [{ required: true, message: '请选择' }],
           },
           dict: dict({
@@ -185,10 +268,11 @@ export default function ({}) {
           title: '打开方式',
           type: 'dict-select',
           form: {
+            helper: '弹框或者内嵌，只对非组件的链接有效',
             rules: [{ required: true, message: '请选择' }],
-
+            value: 1,
             show: compute((context) => {
-              return context.form.isMenu === 1;
+              return context.form.isMenu === 1 && context.form.isComponent === 0;
             }),
           },
           dict: dict({
@@ -205,6 +289,9 @@ export default function ({}) {
           title: '访问控制',
           type: 'dict-select',
           form: {
+            helper:
+              '登录访问：所有用户登录即可访问；授权访问：需要授权才可以访问；匿名访问：开放链接地址',
+            value: 1,
             rules: [{ required: true, message: '请选择' }],
           },
           dict: dict({
@@ -216,6 +303,21 @@ export default function ({}) {
           }),
           column: {
             width: 120,
+          },
+        },
+        description: {
+          title: '菜单描述',
+          search: { show: true },
+          type: 'text',
+          column: {
+            width: 180,
+          },
+        },
+        sort: {
+          title: '排序号',
+          type: 'number',
+          column: {
+            width: 100,
           },
         },
       },

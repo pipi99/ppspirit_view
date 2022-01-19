@@ -339,6 +339,9 @@ export default function ({ expose }) {
           type: 'dict-select',
           search: { show: true },
           form: {
+            component: {
+              value: 0,
+            },
             show: false,
           },
           viewForm: {
@@ -394,6 +397,9 @@ export default function ({ expose }) {
           type: 'dict-select',
           search: { show: true },
           form: {
+            component: {
+              value: 0,
+            },
             show: false,
           },
           viewForm: {

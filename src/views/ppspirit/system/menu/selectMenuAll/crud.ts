@@ -1,8 +1,7 @@
-import { ref } from 'vue';
 import { dict } from '@fast-crud/fast-crud';
-import Api from './api';
+import Api from '/@/views/ppspirit/system/menuall/api';
 // 构建crudOptions的方法
-export default function ({ expose }) {
+export default function ({ expose, selectEffect }) {
   const api = new Api();
   const pageRequest = async (query) => {
     return await api.GetPageList(query);
@@ -21,14 +20,12 @@ export default function ({ expose }) {
   const addRequest = async ({ form }) => {
     return await api.AddObj(form);
   };
-  const selectedRowKeys = ref([]);
 
-  // const onSelectChange = (changed) => {
-  //   console.log('selection', changed);
-  //   selectedRowKeys.value = changed;
-  // };
+  const onSelect = (changed) => {
+    selectEffect(changed);
+  };
+
   return {
-    selectedRowKeys, //返回给index.vue去使用
     batchDelRequest, //返回给index.vue去使用
     crudOptions: {
       request: {
@@ -36,6 +33,30 @@ export default function ({ expose }) {
         addRequest,
         editRequest,
         delRequest,
+      },
+      actionbar: {
+        show: false,
+      },
+      toolbar: {
+        show: false,
+      },
+      rowHandle: {
+        buttons: {
+          view: {
+            show: false,
+          },
+          edit: { show: false }, //编辑按钮
+          remove: { show: false }, //删除按钮
+          select: {
+            text: '选择',
+            title: '选择',
+            type: 'link',
+            click(opts) {
+              onSelect(opts.row);
+            },
+          },
+          custom: {}, //自定义按钮，可以任意命名,任意数量
+        },
       },
       table: {
         rowKey: 'menuId',

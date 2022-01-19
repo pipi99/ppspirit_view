@@ -1196,22 +1196,22 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@fast-crud/fast-crud@^1.0.0-alpha.0":
-  version "1.0.0-alpha.0"
-  resolved "https://registry.npmmirror.com/@fast-crud/fast-crud/download/@fast-crud/fast-crud-1.0.0-alpha.0.tgz#bfab1b906ec8e0cfa7b86a07a500147dc07fb83f"
-  integrity sha512-steSUKiP81flqnjmYHmIB6X8c7jP6Ch49Dy/ME2qLUbXWQPUZvyJ4YrRB/Zg6lwoB36/4PKSlyCuOB7tODeoOQ==
+"@fast-crud/fast-crud@^1.0.0-alpha.5":
+  version "1.0.0-alpha.5"
+  resolved "https://registry.npmmirror.com/@fast-crud/fast-crud/download/@fast-crud/fast-crud-1.0.0-alpha.5.tgz#da9138b3d74ba5d21c0c541810d89f0cd7d91613"
+  integrity sha512-y+FFmJpxL1Xg5Y4kPTc8zC/UfrnDdbGwAXsv119ZqB6y9ZJJcpASyw4cxeWrnQqM0vF6jKRN0RINQILTYWekcA==
   dependencies:
-    "@fast-crud/ui-interface" "^1.0.0-alpha.0"
+    "@fast-crud/ui-interface" "^1.0.0-alpha.4"
     dayjs "^1.10.4"
     deepdash-es "5.3.5"
     lodash-es "^4.17.15"
     lru-cache "^6.0.0"
     vuedraggable "^4.0.3"
 
-"@fast-crud/fast-extends@^1.0.0-alpha.0":
-  version "1.0.0-alpha.0"
-  resolved "https://registry.npmmirror.com/@fast-crud/fast-extends/download/@fast-crud/fast-extends-1.0.0-alpha.0.tgz#14b8e3fcfc2c2495797e1b63d185b92eb9265337"
-  integrity sha512-UlhCrNxKepv/On6Lw1s5o2aPJukNy4PcA93R9TgUyUDPqPLzchh23Ztz7njtvkbfrqPEtJx31z8bKnKDOj6zGQ==
+"@fast-crud/fast-extends@^1.0.0-alpha.5":
+  version "1.0.0-alpha.5"
+  resolved "https://registry.npmmirror.com/@fast-crud/fast-extends/download/@fast-crud/fast-extends-1.0.0-alpha.5.tgz#df79b9ce4910332da99f9a245bb5745379c89429"
+  integrity sha512-uPAQOIEBMxGnLeMWT5yKY36jBroxZTfNcl1rh4a8FXg/Kh/a7EfjMo3r5jwoW9naYeHAH78iMtanaE18WyVqTQ==
   dependencies:
     ali-oss "^6.16.0"
     cos-js-sdk-v5 "^1.2.9"
@@ -1226,17 +1226,17 @@
     vue-cropperjs "^5.0.0"
     wangeditor "^4.7.5"
 
-"@fast-crud/ui-antdv@^1.0.0-alpha.0":
-  version "1.0.0-alpha.0"
-  resolved "https://registry.npmmirror.com/@fast-crud/ui-antdv/download/@fast-crud/ui-antdv-1.0.0-alpha.0.tgz#f1e8e5a8a9345cc4f4f425bb8eb6bae10ff1617c"
-  integrity sha512-k0UM6S3UJzFGKn3+rYkoIaeN2sXkgkcIltVJykON+/23CESxKusy+cY3iQKnkHbUQ14TRy3qBgXAXAR8YpgECw==
+"@fast-crud/ui-antdv@^1.0.0-alpha.5":
+  version "1.0.0-alpha.5"
+  resolved "https://registry.npmmirror.com/@fast-crud/ui-antdv/download/@fast-crud/ui-antdv-1.0.0-alpha.5.tgz#7a76072c6f0e97fd1428ee14b6ad825ba2a85777"
+  integrity sha512-JFrzO5cOekPP3eaMgyULaha2paJVprsYR2T2Vqgpd10atuyQVpTvlGMhNEEPNBZDdFFtwraXktWuoytquAZcYw==
   dependencies:
-    "@fast-crud/ui-interface" "^1.0.0-alpha.0"
+    "@fast-crud/ui-interface" "^1.0.0-alpha.4"
 
-"@fast-crud/ui-interface@^1.0.0-alpha.0":
-  version "1.0.0-alpha.0"
-  resolved "https://registry.npmmirror.com/@fast-crud/ui-interface/download/@fast-crud/ui-interface-1.0.0-alpha.0.tgz#f3de8a95e0eb99326b3acb5447e2837c9dcde76a"
-  integrity sha512-s0kmv2qqSvP38NFRZlisxOxPoVh2sR2IdOGiUy3FRxYZfN10dYDvWALRojzgughmjNp4gga+SMZDZU7d/HALEA==
+"@fast-crud/ui-interface@^1.0.0-alpha.4":
+  version "1.0.0-alpha.4"
+  resolved "https://registry.npmmirror.com/@fast-crud/ui-interface/download/@fast-crud/ui-interface-1.0.0-alpha.4.tgz#3f6f12b0ff0241f0d8a226249e2a3309d652ff98"
+  integrity sha512-M37oDGVh4ZrhnKMQhkPUIvdTfOmbaeN2Jc8RjR+NvwsiWIwo2Kz9NbHU9Z+2Q7HRR7caBXtc5o5rNZy/kfIuBg==
 
 "@humanwhocodes/config-array@^0.9.2":
   version "0.9.2"
